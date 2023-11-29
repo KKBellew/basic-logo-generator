@@ -1,6 +1,7 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const SVGBuilder = require('svg-builder');
+const shapes = require('inquirer');
 
 async function generateLogo(){
 
@@ -11,14 +12,8 @@ async function generateLogo(){
             name: 'text',
         },
         {
-            type: 'list',
-            message: 'What text color would you like?',
-            choices: ['Black', 'White','Grey','Blue', 'Yellow', 'Green', 'Pink' ],
-            name: 'textColor',
-        },
-        {
             type: 'input',
-            message: 'Enter a color keyword or a hexidecimal number?',
+            message: 'Enter a color or a hexidecimal number?',
             name: 'color',
         },
         {
@@ -29,7 +24,7 @@ async function generateLogo(){
         },
         {    
             type: 'input',
-            message: 'what color or hexidecimal number for the shape?',
+            message: 'Input a color or hexidecimal number for the shape?',
             name: 'shapeColor',
         },
         {    
@@ -37,14 +32,19 @@ async function generateLogo(){
             message: 'Enter a filename for the logo.',
             name: 'fileName',
         },
-    ])
+    ]);
+
+    return userInput;
 }
 
+async function run(){
+    const userInput = await generateLogo();
+
 //generate logo
-const svg = new SVGBuilder({
-    height:150, 
-    width: 150, 
-})
+    const svg = new SVGBuilder({
+        height:150, 
+        width: 150, 
+    })
 
 .setFillColor(userInput.shapeColor)
 .drawShape(userInput.shape.toLowerCase())
@@ -56,6 +56,7 @@ const svg = new SVGBuilder({
 const fileName = `${userInput.fileName}.svg`;
 fs.writeFileSync(fileName, svg);
 console.log(`Logo generated and saved to ${fileName}`);
+}
 
 //generate logo
-generateLogo();
+run();

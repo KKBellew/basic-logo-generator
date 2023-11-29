@@ -1,0 +1,55 @@
+class SVGBuilder {
+  constructor(options) {
+    this.options = options || {};
+    this.elements = [];
+  }
+
+  setWidth(width) {
+    this.width = width;
+    return this;
+  }
+
+  setHeight(height) {
+    this.height = height;
+    return this;
+  }
+
+  setFillColor(fillColor) {
+    this.fillColor = fillColor;
+    return this;
+  }
+
+  build() {
+    const svgAttributes = [
+      `width="${this.width}"`,
+      `height="${this.height}"`,
+      `fill="${this.fillColor}"`,
+    ].join(' ');
+
+    const svgContent = this.elements.join('');
+
+    return `<svg ${svgAttributes}>${svgContent}</svg>`;
+  }
+
+  drawRectangle(x, y, width, height) {
+    const rectAttributes = [
+      `x="${x}"`,
+      `y="${y}"`,
+      `width="${width}"`,
+      `height="${height}"`,
+    ].join(' ');
+
+    this.elements.push(`<rect ${rectAttributes} />`);
+    return this;
+  }
+}
+
+// Example usage
+const svg = new SVGBuilder()
+  .setWidth(200)
+  .setHeight(150)
+  .setFillColor('blue')
+  .drawRectangle(10, 10, 180, 130)
+  .build();
+
+console.log(svg);
